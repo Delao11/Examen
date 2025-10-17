@@ -17,7 +17,7 @@ namespace Caso2_AgendaPro
             Telefono = telefono;
         }
 
-        public override string ToString() // Implementación ToString Persona
+        public override string ToString()
         {
             return $"{Id}|{Nombre}|{Telefono}";
         }
@@ -29,7 +29,7 @@ namespace Caso2_AgendaPro
         public DateTime Fecha { get; set; }
         public string Descripcion { get; set; }
 
-        public override string ToString() // Implementación ToString Cita
+        public override string ToString()
         {
             return $"{PersonaId}|{Fecha:yyyy-MM-dd HH:mm}|{Descripcion}";
         }
@@ -42,6 +42,7 @@ namespace Caso2_AgendaPro
 
         static void Main()
         {
+            // ... (Menú principal igual)
             bool salir = false;
             while (!salir)
             {
@@ -68,9 +69,35 @@ namespace Caso2_AgendaPro
             }
         }
 
-        // Métodos vacíos (stubs)
-        static void RegistrarPersona() { Console.WriteLine("Falta implementar RegistrarPersona."); }
-        static void ListarPersonas() { Console.WriteLine("Falta implementar ListarPersonas."); }
+        static void RegistrarPersona() // Implementación RegistrarPersona
+        {
+            Console.Write("Id: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Id inválido.");
+                return;
+            }
+            if (personas.Exists(p => p.Id == id))
+            {
+                Console.WriteLine("Id duplicado.");
+                return;
+            }
+
+            Console.Write("Nombre: ");
+            string nombre = Console.ReadLine();
+            Console.Write("Teléfono: ");
+            string telefono = Console.ReadLine();
+            personas.Add(new Persona(id, nombre, telefono));
+            Console.WriteLine("Persona registrada.");
+        }
+
+        static void ListarPersonas() // Implementación ListarPersonas
+        {
+            if (personas.Count == 0) { Console.WriteLine("No hay personas."); return; }
+            foreach (var p in personas) Console.WriteLine(p.ToString());
+        }
+
+        // Métodos stub restantes
         static void CrearCita() { Console.WriteLine("Falta implementar CrearCita."); }
         static void ListarCitasPorPersona() { Console.WriteLine("Falta implementar ListarCitasPorPersona."); }
         static void MostrarTodasCitas() { Console.WriteLine("Falta implementar MostrarTodasCitas."); }
