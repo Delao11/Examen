@@ -10,6 +10,11 @@ namespace Caso1_ElectroPlus
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
         public int Cantidad { get; set; }
+
+        public override string ToString() // Implementación ToString
+        {
+            return $"{Codigo}|{Nombre}|{Precio.ToString("F2", CultureInfo.InvariantCulture)}|{Cantidad}";
+        }
     }
 
     class Program
@@ -18,6 +23,7 @@ namespace Caso1_ElectroPlus
 
         static void Main()
         {
+            // ... (Menú principal igual)
             bool salir = false;
             while (!salir)
             {
@@ -42,9 +48,49 @@ namespace Caso1_ElectroPlus
             }
         }
 
-     
-        static void AgregarProducto() { Console.WriteLine("Falta implementar AgregarProducto."); }
-        static void ListarProductos() { Console.WriteLine("Falta implementar ListarProductos."); }
+        static void AgregarProducto() // Implementación AgregarProducto
+        {
+            Console.Write("Código: ");
+            string codigo = Console.ReadLine();
+            if (productos.Exists(p => p.Codigo == codigo))
+            {
+                Console.WriteLine("Ese código ya existe.");
+                return;
+            }
+
+            Console.Write("Nombre: ");
+            string nombre = Console.ReadLine();
+
+            Console.Write("Precio: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal precio))
+            {
+                Console.WriteLine("Precio inválido.");
+                return;
+            }
+
+            Console.Write("Cantidad: ");
+            if (!int.TryParse(Console.ReadLine(), out int cantidad))
+            {
+                Console.WriteLine("Cantidad inválida.");
+                return;
+            }
+
+            productos.Add(new Product { Codigo = codigo, Nombre = nombre, Precio = precio, Cantidad = cantidad });
+            Console.WriteLine("Producto agregado correctamente.");
+        }
+
+        static void ListarProductos() // Implementación ListarProductos
+        {
+            if (productos.Count == 0)
+            {
+                Console.WriteLine("No hay productos registrados.");
+                return;
+            }
+            foreach (var p in productos)
+                Console.WriteLine(p.ToString());
+        }
+
+        // Métodos stub restantes
         static void BuscarPorCodigo() { Console.WriteLine("Falta implementar BuscarPorCodigo."); }
         static void MostrarAgotados() { Console.WriteLine("Falta implementar MostrarAgotados."); }
     }
