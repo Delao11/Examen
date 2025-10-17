@@ -42,7 +42,6 @@ namespace Caso2_AgendaPro
 
         static void Main()
         {
-            // ... (Menú principal igual)
             bool salir = false;
             while (!salir)
             {
@@ -69,7 +68,7 @@ namespace Caso2_AgendaPro
             }
         }
 
-        static void RegistrarPersona() // Implementación RegistrarPersona
+        static void RegistrarPersona()
         {
             Console.Write("Id: ");
             if (!int.TryParse(Console.ReadLine(), out int id))
@@ -91,15 +90,46 @@ namespace Caso2_AgendaPro
             Console.WriteLine("Persona registrada.");
         }
 
-        static void ListarPersonas() // Implementación ListarPersonas
+        static void ListarPersonas()
         {
             if (personas.Count == 0) { Console.WriteLine("No hay personas."); return; }
             foreach (var p in personas) Console.WriteLine(p.ToString());
         }
 
-        // Métodos stub restantes
-        static void CrearCita() { Console.WriteLine("Falta implementar CrearCita."); }
-        static void ListarCitasPorPersona() { Console.WriteLine("Falta implementar ListarCitasPorPersona."); }
-        static void MostrarTodasCitas() { Console.WriteLine("Falta implementar MostrarTodasCitas."); }
+        static void CrearCita() // Implementación CrearCita
+        {
+            Console.Write("PersonaId: ");
+            if (!int.TryParse(Console.ReadLine(), out int id)) { Console.WriteLine("Id inválido."); return; }
+
+            var persona = personas.Find(p => p.Id == id);
+            if (persona == null) { Console.WriteLine("No existe persona."); return; }
+
+            Console.Write("Fecha (yyyy-MM-dd HH:mm): ");
+            if (!DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
+            {
+                Console.WriteLine("Formato de fecha incorrecto.");
+                return;
+            }
+
+            Console.Write("Descripción: ");
+            string desc = Console.ReadLine();
+            citas.Add(new Cita { PersonaId = id, Fecha = fecha, Descripcion = desc });
+            Console.WriteLine("Cita creada.");
+        }
+
+        static void ListarCitasPorPersona() // Implementación ListarCitasPorPersona
+        {
+            Console.Write("PersonaId: ");
+            if (!int.TryParse(Console.ReadLine(), out int id)) { Console.WriteLine("Id inválido."); return; }
+            var lista = citas.FindAll(c => c.PersonaId == id);
+            if (lista.Count == 0) { Console.WriteLine("No hay citas para ese Id."); return; }
+            foreach (var c in lista) Console.WriteLine(c.ToString());
+        }
+
+        static void MostrarTodasCitas() // Implementación MostrarTodasCitas
+        {
+            if (citas.Count == 0) { Console.WriteLine("No hay citas."); return; }
+            foreach (var c in citas) Console.WriteLine(c.ToString());
+        }
     }
 }
