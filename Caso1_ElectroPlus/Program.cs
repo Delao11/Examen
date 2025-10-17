@@ -11,7 +11,7 @@ namespace Caso1_ElectroPlus
         public decimal Precio { get; set; }
         public int Cantidad { get; set; }
 
-        public override string ToString() // Implementación ToString
+        public override string ToString()
         {
             return $"{Codigo}|{Nombre}|{Precio.ToString("F2", CultureInfo.InvariantCulture)}|{Cantidad}";
         }
@@ -23,7 +23,6 @@ namespace Caso1_ElectroPlus
 
         static void Main()
         {
-            // ... (Menú principal igual)
             bool salir = false;
             while (!salir)
             {
@@ -48,7 +47,7 @@ namespace Caso1_ElectroPlus
             }
         }
 
-        static void AgregarProducto() // Implementación AgregarProducto
+        static void AgregarProducto()
         {
             Console.Write("Código: ");
             string codigo = Console.ReadLine();
@@ -79,7 +78,7 @@ namespace Caso1_ElectroPlus
             Console.WriteLine("Producto agregado correctamente.");
         }
 
-        static void ListarProductos() // Implementación ListarProductos
+        static void ListarProductos()
         {
             if (productos.Count == 0)
             {
@@ -90,8 +89,27 @@ namespace Caso1_ElectroPlus
                 Console.WriteLine(p.ToString());
         }
 
-        // Métodos stub restantes
-        static void BuscarPorCodigo() { Console.WriteLine("Falta implementar BuscarPorCodigo."); }
-        static void MostrarAgotados() { Console.WriteLine("Falta implementar MostrarAgotados."); }
+        static void BuscarPorCodigo() // Implementación BuscarPorCodigo
+        {
+            Console.Write("Ingrese código a buscar: ");
+            string codigo = Console.ReadLine();
+            var p = productos.Find(x => x.Codigo == codigo);
+            if (p == null) Console.WriteLine("No encontrado.");
+            else Console.WriteLine(p.ToString());
+        }
+
+        static void MostrarAgotados() // Implementación MostrarAgotados
+        {
+            bool hay = false;
+            foreach (var p in productos)
+            {
+                if (p.Cantidad == 0)
+                {
+                    Console.WriteLine(p.ToString());
+                    hay = true;
+                }
+            }
+            if (!hay) Console.WriteLine("No hay productos agotados.");
+        }
     }
 }
